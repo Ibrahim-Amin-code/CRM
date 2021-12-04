@@ -4,6 +4,7 @@ import 'package:crm_software/screens/authentication/forget_password/forget_passw
 import 'package:crm_software/screens/authentication/login_screen/login_cubit/cubit.dart';
 import 'package:crm_software/screens/authentication/login_screen/login_cubit/states.dart';
 import 'package:crm_software/screens/layout/layout_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,7 +45,7 @@ class LoginBoody extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 40),
                           child: Text(
-                            'Your Phone',
+                            'Your Phone Or Username',
                             style: TextStyle(
                                 fontFamily: 'Cairo',fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white
                             ),),
@@ -68,8 +69,8 @@ class LoginBoody extends StatelessWidget {
                                   obscureText: false,
                                   controller: phoneController,
                                   double:35,
-                                  type: TextInputType.phone,
-                                  hintText:'Your Phone',
+                                  type: TextInputType.text,
+                                  hintText:'Your Phone Or Username',
                                   validator: (val)
                                   {
                                     if(val!.isEmpty){
@@ -159,15 +160,51 @@ class LoginBoody extends StatelessWidget {
                                   context: context,
                                   email: phoneController.text, password:  passwordController.text, //01062015106 // 123456
                                 );
+
                                 // if(formKey.currentState!.validate()){
                                 //   // Navigator.push(context,MaterialPageRoute(builder: (context)=> LayoutScreen(index: 0,)));
                                 //
                                 // }
-                                },
+
+                              },
                               background: Colors.red,
                               radius: 20,
                             ),
                           ),
+                        ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Login As Guest',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Cairo',
+                              fontSize: 15
+                            ),
+                            ),
+                            SizedBox(width: 10,),
+                            TextButton(onPressed: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>LayoutScreen(index: 0,)));
+                            },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.redAccent,
+                                    borderRadius: BorderRadius.circular(10)
+                                  ),
+                                  child: Text('Click Her',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Cairo',fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),),
+                                ))
+                          ],
                         ),
                       ],
                     ),

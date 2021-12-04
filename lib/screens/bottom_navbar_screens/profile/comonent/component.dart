@@ -1,6 +1,8 @@
 import 'package:crm_software/screens/authentication/componenets/component.dart';
+import 'package:crm_software/screens/bottom_navbar_screens/profile/profile_screens/update_my_account/cubit/cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 
 Widget buildEditProfileCard({
   context,
@@ -52,6 +54,7 @@ Widget buildEditProfileCard({
   @required context,
    required String mainText,
    required Widget textFormField,
+   required VoidCallback? onPressed
 }){
   return showModalBottomSheet(
       backgroundColor: Theme.of(context).bottomSheetTheme.backgroundColor,
@@ -79,9 +82,14 @@ Widget buildEditProfileCard({
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     Spacer(),
-                    Icon(
-                      Icons.close,
-                      size: 25,
+                    IconButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                      icon:  Icon(
+                        Icons.close,
+                        size: 25,
+                      ),
                     )
                   ],
                 ),
@@ -103,9 +111,7 @@ Widget buildEditProfileCard({
                   // height: 25,
                   width: 80,
                   child: TextButton(
-                    onPressed: () {
-                      // updateData(email: '',context: context,phone: '',name: textField,password: '',username: '');
-                    },
+                    onPressed: onPressed,
                     child: Text(
                       'Save',
                       style: TextStyle(

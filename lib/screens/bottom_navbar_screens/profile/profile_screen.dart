@@ -1,10 +1,15 @@
 import 'package:crm_software/screens/authentication/componenets/component.dart';
-import 'package:crm_software/screens/bottom_navbar_screens/profile/profile_screens/my_account_screen.dart';
+import 'package:crm_software/screens/authentication/login_screen/login_cubit/cubit.dart';
+import 'package:crm_software/screens/authentication/login_screen/login_cubit/states.dart';
+import 'package:crm_software/screens/bottom_navbar_screens/profile/profile_screens/update_my_account/my_account_screen.dart';
 import 'package:crm_software/screens/bottom_navbar_screens/profile/profile_screens/setting_screen.dart';
 import 'package:crm_software/screens/clients_management/add_client/add_client_screen.dart';
 import 'package:crm_software/screens/clients_management/clientrs_management_screen.dart';
+import 'package:crm_software/screens/splash/splashScreen.dart';
 import 'package:crm_software/screens/tasks/tasks_component/tasks_component.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../component/component.dart';
 import 'comonent/component.dart';
@@ -12,18 +17,13 @@ import 'comonent/component.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         elevation: 1,
         title: Center(
           child: Text('My Profile', style: Theme.of(context).appBarTheme.titleTextStyle),
         ),
-        // backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
-        // leading: InkWell(
-        //     // onTap: ()=> scafolldKey.currentState!.openDrawer(),
-        //     child: Icon(Icons.arrow_back_ios,color: Colors.black,size: 25,)),
-
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Padding(
@@ -31,21 +31,21 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           Center(
-             child: Container(
-               decoration: BoxDecoration(
-                 border: Border.all(
-                   color: Colors.blue
-                 ),
-                   shape: BoxShape.circle
-               ),
-                    child: Image( height: 80, width: 80,fit: BoxFit.cover, image: AssetImage('assets/images/avatar3 1.png'),
-          ),
-           ),
-           ),
+            Center(
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Colors.blue
+                    ),
+                    shape: BoxShape.circle
+                ),
+                child: Image( height: 80, width: 80,fit: BoxFit.cover, image: AssetImage('assets/images/avatar3 1.png'),
+                ),
+              ),
+            ),
             Center(
               child: Text('Ibrahim Amin',
-              style: Theme.of(context).textTheme.headline2,
+                style: Theme.of(context).textTheme.headline2,
               ),
             ),
             SizedBox(
@@ -53,22 +53,22 @@ class ProfileScreen extends StatelessWidget {
             ),
             Row(
               children: [
-               InkWell(
-                 onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> MyAccountScreen())),
-                 child:  buildProfileCards(
-                   context:  context,
-                   sizeBoxWidth: 15,
-                   width: 170,
-                   height: 50,
-                   icon: Icon(Icons.account_circle_outlined,color: Colors.blue.shade500,size: 25,),
-                   iconCircleAvatar:CircleAvatar(
-                     radius: 12,
-                    backgroundColor: Colors.transparent,
-                     child: Icon(Icons.arrow_forward_ios,size: 20,color: Colors.grey,),
-                   ),
-                   title: 'My Account',
-                 ),
-               ),
+                InkWell(
+                  onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> MyAccountScreen())),
+                  child:  buildProfileCards(
+                    context:  context,
+                    sizeBoxWidth: 15,
+                    width: 170,
+                    height: 50,
+                    icon: Icon(Icons.account_circle_outlined,color: Colors.blue.shade500,size: 25,),
+                    iconCircleAvatar:CircleAvatar(
+                      radius: 12,
+                      backgroundColor: Colors.transparent,
+                      child: Icon(Icons.arrow_forward_ios,size: 20,color: Colors.grey,),
+                    ),
+                    title: 'My Account',
+                  ),
+                ),
                 SizedBox(width: 10,),
                 InkWell(
                   onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingScreen())),
@@ -147,39 +147,47 @@ class ProfileScreen extends StatelessWidget {
                     title: 'Add client',
                   ),
                 ),
-               SizedBox(width: 10,),
-              InkWell(
-                onTap: ()=> Navigator.push(context,MaterialPageRoute(builder: (context)=> ClientsManagement())),
-                child:   buildProfileCards(
-                  context:  context,
-                  sizeBoxWidth: 7,
-                  title: 'My clients',
-                  width: 143,
-                  height: 50,
-                  icon: Icon(Icons.group_outlined,color: Colors.blue.shade500,size: 20,),
-                  iconCircleAvatar:CircleAvatar(
-                    radius: 12,
-                    backgroundColor: Colors.transparent,
-                    child: Icon(Icons.arrow_forward_ios,size: 20,color: Colors.grey,),
+                SizedBox(width: 10,),
+                InkWell(
+                  onTap: ()=> Navigator.push(context,MaterialPageRoute(builder: (context)=> ClientsManagement())),
+                  child:   buildProfileCards(
+                    context:  context,
+                    sizeBoxWidth: 7,
+                    title: 'My clients',
+                    width: 143,
+                    height: 50,
+                    icon: Icon(Icons.group_outlined,color: Colors.blue.shade500,size: 20,),
+                    iconCircleAvatar:CircleAvatar(
+                      radius: 12,
+                      backgroundColor: Colors.transparent,
+                      child: Icon(Icons.arrow_forward_ios,size: 20,color: Colors.grey,),
+                    ),
                   ),
                 ),
-              ),
               ],
             ),
             SizedBox(height: 10,),
-            buildProfileCards(
-              context:  context,
-              sizeBoxWidth: 7,
-              title: 'Logout',
-              width: 170,
-              height: 50,
-              icon: Icon(Icons.logout,color: Colors.blue.shade500,size: 20,),
-              iconCircleAvatar:CircleAvatar(
-                radius: 12,
-                backgroundColor: Colors.transparent,
-                child: Icon(Icons.arrow_forward_ios,size: 20,color: Colors.grey,),
+            InkWell(
+              onTap: ()async{
+                SharedPreferences shared = await SharedPreferences.getInstance();
+                shared.clear();
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Splash()));
+              },
+              child: buildProfileCards(
+                context:  context,
+                sizeBoxWidth: 7,
+                title: 'Logout',
+                width: 170,
+                height: 50,
+                icon: Icon(Icons.logout,color: Colors.blue.shade500,size: 20,),
+                iconCircleAvatar:CircleAvatar(
+                  radius: 12,
+                  backgroundColor: Colors.transparent,
+                  child: Icon(Icons.arrow_forward_ios,size: 20,color: Colors.grey,),
+                ),
               ),
             ),
+
           ],
         ),
       ),
